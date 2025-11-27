@@ -74,14 +74,26 @@ async function handleWebSocket(request, env) {
  * Parse job listing (text or HTML)
  */
 async function handleParseJob(request, env, corsHeaders) {
-    const { content, isHtml } = await request.json();
+    try {
+        const { content, isHtml } = await request.json();
 
-    const { parseJobListing } = await import('./services/parser.js');
-    const parsed = await parseJobListing(content, isHtml, env.AI);
+        const { parseJobListing } = await import('./services/parser.js');
+        const parsed = await parseJobListing(content, isHtml, env.AI);
 
-    return new Response(JSON.stringify(parsed), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+        return new Response(JSON.stringify(parsed), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+    } catch (error) {
+        console.error('Error in handleParseJob:', error);
+        return new Response(JSON.stringify({
+            error: error.message,
+            original: '',
+            parsed: 'Error parsing job listing'
+        }), {
+            status: 500,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+    }
 }
 
 /**
