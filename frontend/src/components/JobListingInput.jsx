@@ -1,55 +1,16 @@
 import { useState } from 'react';
 
 function JobListingInput({ jobListing, setJobListing, onNext, onBack, apiBase }) {
-    const [isDragging, setIsDragging] = useState(false);
     const [isParsing, setIsParsing] = useState(false);
     const [parsedData, setParsedData] = useState(null);
 
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file && file.name.endsWith('.html')) {
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                const content = event.target.result;
-                setJobListing({ content, isHtml: true });
-                await parseJobListing(content, true);
-            };
-            reader.readAsText(file);
-        }
-    };
-
-    const handleDrop = async (e) => {
-        e.preventDefault();
-        setIsDragging(false);
-
-        const file = e.dataTransfer.files[0];
-        if (file && file.name.endsWith('.html')) {
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                const content = event.target.result;
-                setJobListing({ content, isHtml: true });
-                await parseJobListing(content, true);
-            };
-            reader.readAsText(file);
-        }
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = () => {
-        setIsDragging(false);
-    };
-
-    const parseJobListing = async (content, isHtml) => {
+    const parseJobListing = async (content) => {
         setIsParsing(true);
         try {
             const response = await fetch(`${apiBase}/api/parse-job`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content, isHtml }),
+                body: JSON.stringify({ content, isHtml: false }),
             });
             const data = await response.json();
             setParsedData(data.parsed);
@@ -67,7 +28,7 @@ function JobListingInput({ jobListing, setJobListing, onNext, onBack, apiBase })
 
     const handleParse = () => {
         if (jobListing.content) {
-            parseJobListing(jobListing.content, jobListing.isHtml);
+            parseJobListing(jobListing.content);
         }
     };
 
@@ -77,42 +38,8 @@ function JobListingInput({ jobListing, setJobListing, onNext, onBack, apiBase })
                 💼 Job Listing
             </h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-                Paste the job description or upload an HTML file from the job site
+                Copy and paste the job description below
             </p>
-
-            {/* HTML Upload Area */}
-            <div
-                className={`upload-area ${isDragging ? 'dragging' : ''}`}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                style={{
-                    border: `2px dashed ${isDragging ? 'var(--accent-primary)' : 'var(--border-color)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    padding: '1.5rem',
-                    textAlign: 'center',
-                    marginBottom: '1.5rem',
-                    transition: 'all var(--transition-base)',
-                    backgroundColor: isDragging ? 'rgba(99, 102, 241, 0.05)' : 'transparent',
-                }}
-            >
-                <input
-                    type="file"
-                    id="job-upload"
-                    accept=".html"
-                    onChange={handleFileUpload}
-                    style={{ display: 'none' }}
-                />
-                <label htmlFor="job-upload" style={{ cursor: 'pointer' }}>
-                    <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🌐</div>
-                    <p style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        Drop HTML file here or click to browse
-                    </p>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-                        Save job listing as HTML from your browser
-                    </p>
-                </label>
-            </div>
 
             {/* Textarea */}
             <div style={{ marginBottom: '1.5rem' }}>
@@ -124,8 +51,8 @@ function JobListingInput({ jobListing, setJobListing, onNext, onBack, apiBase })
                     className="textarea-field"
                     value={jobListing.content}
                     onChange={(e) => handleTextChange(e.target.value)}
-                    placeholder="Paste the job description here..."
-                    style={{ minHeight: '300px', fontFamily: 'var(--font-body)' }}
+                    placeholder="Paste the job description here...&#10;&#10;Example:&#10;Software Engineer&#10;&#10;We are looking for a talented Software Engineer with experience in:&#10;- Python and JavaScript&#10;- React and Node.js&#10;- Cloud platforms (AWS/Azure)&#10;&#10;..."
+                    style={{ minHeight: '350px', fontFamily: 'var(--font-body)' }}
                 />
             </div>
 
@@ -143,7 +70,7 @@ function JobListingInput({ jobListing, setJobListing, onNext, onBack, apiBase })
                             Analyzing job listing...
                         </>
                     ) : (
-                        '🔍 Analyze Job Requirements'
+                        '🔍 Analyze Job Requirements (Optional)'
                     )}
                 </button>
             )}
