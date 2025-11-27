@@ -1,0 +1,21 @@
+{
+    "name": "cf_ai_resume",
+    "version": "1.0.0",
+    "description": "AI-powered resume optimizer using Cloudflare Workers AI",
+    "private": true,
+    "scripts": {
+        "dev:frontend": "cd frontend && npm run dev",
+        "dev:backend": "wrangler dev",
+        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+        "build:frontend": "cd frontend && npm run build",
+        "build": "npm run build:frontend",
+        "deploy:backend": "wrangler deploy",
+        "deploy:frontend": "cd frontend && npm run build && wrangler pages deploy dist",
+        "deploy": "npm run deploy:backend && npm run deploy:frontend"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "wrangler": "^3.100.0",
+        "concurrently": "^9.1.0"
+    }
+}
