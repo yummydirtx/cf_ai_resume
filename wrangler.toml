@@ -14,7 +14,7 @@ script_name = "cf-ai-resume-optimizer"
 
 [[migrations]]
 tag = "v1"
-new_classes = ["ChatSession"]
+new_sqlite_classes = ["ChatSession"]
 
 # KV namespace for user preferences
 [[kv_namespaces]]

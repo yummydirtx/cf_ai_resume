@@ -2,6 +2,8 @@
 
 > Optimize your LaTeX resume for specific job listings using Cloudflare Workers AI (Llama 3.3)
 
+**🌐 [Live Demo](https://f5f35c23.cf-ai-resume.pages.dev)** | **[GitHub](https://github.com/yummydirtx/cf_ai_resume)**
+
 ![Cloudflare Workers AI](https://img.shields.io/badge/Cloudflare-Workers%20AI-F38020?logo=cloudflare)
 ![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-7.2-646CFF?logo=vite)
@@ -40,13 +42,22 @@ This application demonstrates all required components for the Cloudflare AI assi
 - Workers AI (LLM inference)
 - Workers KV (user preferences)
 
-## 🚀 Quick Start
+## 🌐 Deployment
 
-### Prerequisites
+### Live Application
+
+**Frontend (Cloudflare Pages)**: https://f5f35c23.cf-ai-resume.pages.dev  
+**Backend (Cloudflare Workers)**: https://cf-ai-resume-optimizer.frutkinalexander.workers.dev
+
+### Deploy Your Own Instance
+
+#### Prerequisites
 
 - Node.js 18+ and npm
 - Cloudflare account (free tier works!)
 - Wrangler CLI
+
+## 🚀 Quick Start
 
 ### Local Development
 

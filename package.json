@@ -13,9 +13,8 @@
         "deploy:frontend": "cd frontend && npm run build && wrangler pages deploy dist",
         "deploy": "npm run deploy:backend && npm run deploy:frontend"
     },
-    "dependencies": {},
     "devDependencies": {
-        "wrangler": "^3.100.0",
-        "concurrently": "^9.1.0"
+        "concurrently": "^9.1.0",
+        "wrangler": "^4.51.0"
     }
 }
